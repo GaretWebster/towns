@@ -25,12 +25,14 @@
 <h3>Get configuration from JSON file</h3>
 <div>
   <button (click)="clear(); showConfig()">get</button>
-  <button (click)="clear(); showConfig_v1()">get_v1</button>
-  <button (click)="clear(); showConfig_v2()">get_v2</button>
   <button (click)="clear(); showCities()">get_cities</button>
   <button (click)="clear(); showConfigResponse()">getResponse</button>
   <button (click)="clear()">clear</button>
   <button (click)="clear(); makeError()">error</button>
+  <span *ngIf="city">
+    <p>city 0 name is "{{city[0].name}}"</p>
+    <p>city 0 state is "{{city[0].admin1_code}}"</p>
+  </span>
   <span *ngIf="config">
     <p>Heroes API URL is "{{config.heroesUrl}}"</p>
     <p>Textfile URL is "{{config.textfile}}"</p>
