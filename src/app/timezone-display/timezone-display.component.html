@@ -1,11 +1,23 @@
 <p>
-  timezone-display component
-  {{word}}
-  {{data}}
+	timezone-display component {{word}} {{data}}
 </p>
 
-<input type="text" matInput [formControl]="stateCtrl">
+<form class="example-form">
+	<mat-form-field class="example-full-width">
+		<input type="text" placeholder="State" aria-label="Number" matInput [formControl]="stateControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 
-<mat-form-field>
-  <input type="text" matInput [formControl]="myControl">
-</mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input type="text" placeholder="Town" aria-label="Number" matInput [formControl]="stateControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
