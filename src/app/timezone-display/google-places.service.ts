@@ -32,20 +32,20 @@ export interface Config {
   textfile: string;
 }
 
-//@Injectable()
-@Injectable({
+@Injectable()
+/*@Injectable({
   providedIn: 'root'
-})
+})*/
 export class GooglePlacesService {
   citiesURL = 'assets/cities.json';
-  configUrl = 'assets/googlePlacesConfig.json'
+  configUrl = 'assets/config.json';
 
   constructor(private http: HttpClient) { }
 
   getCities() {
     return this.http.get<Cities>(this.citiesURL);
   }
-  
+
   getConfig() {
     return this.http.get<Config>(this.configUrl)
       .pipe(
