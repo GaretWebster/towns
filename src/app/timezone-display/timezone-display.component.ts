@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { GooglePlacesService, Config, Cities } from './google-places.service'
-
-//import * as options from 'cities.json';
+import { GooglePlacesService, States, Cities } from './google-places.service'
 
 @Component({
   selector: 'app-timezone-display',
@@ -16,49 +14,31 @@ import { GooglePlacesService, Config, Cities } from './google-places.service'
 export class TimezoneDisplayComponent implements OnInit {
   error: any;
   headers: string[];
+  states: States;
   city: Cities;
-  config: Config;
+  stateControl = new FormControl();
+  townControl = new FormControl();
+  stateNames: string[] = ['California', 'Not California', 'Do we really need a third option?'];
+  townNames: string[] = ['San Diego', 'Not San Diego', "We don't need a third option"];
+  filteredStateNames: Observable<string[]>;
+  filteredTownNames: Observable<string[]>;
+  stateControl = new FormControl();
+  townControl = new FormControl();
 
-  constructor(private googlePlacesService: GooglePlacesService) { }
-
-  clear() {
-    this.config = undefined;
-    this.error = undefined;
-    this.headers = undefined;
-  }
+  constructor(private forumBuilder: FormBuilder, private googlePlacesService: GooglePlacesService) { }
 
   ngOnInit() {
-    this.filteredOptions = this.stateControl.valueChanges
+    this.filteredStateNames = this.stateControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => this._filter(value))
+        map(value => this._filterState(value))
       );
-  }
 
-  showConfig() {
-    this.googlePlacesService.getConfig()
-      .subscribe(
-        (data: Config) => this.config = { ...data }, // success path
-        error => this.error = error // error path
+    this.filteredTownNames = this.townControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filterTown(value))
       );
-  }
-
-  showConfigResponse() {
-    this.googlePlacesService.getConfigResponse()
-      // resp is of type `HttpResponse<Config>`
-      .subscribe(resp => {
-        // display its headers
-        const keys = resp.headers.keys();
-        this.headers = keys.map(key =>
-          `${key}: ${resp.headers.get(key)}`);
-
-        // access the body directly, which is typed as `Config`.
-        this.config = { ...resp.body };
-      });
-  }
-
-  makeError() {
-    this.googlePlacesService.makeIntentionalError().subscribe(null, error => this.error = error);
   }
 
   showCities() {
@@ -68,15 +48,42 @@ export class TimezoneDisplayComponent implements OnInit {
         error => this.error = error // error path
       );
   }
-  //options = this.city.name;
 
-  stateControl = new FormControl();
-  //options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  showBigCities() {
+    this.googlePlacesService.getBigCities()
+      .subscribe(
+        (data: Cities) => this.city = { ...data }, // success path
+        error => this.error = error // error path
+      );
+  }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  showStates() {
+    this.googlePlacesService.getStates()
+      .subscribe(
+        (data: States) => this.states = { ...data }, // success path
+        error => this.error = error // error path
+      );
+  }
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  clear() {
+    this.states = undefined;
+    this.error = undefined;
+    this.headers = undefined;
+  }
+
+  makeError() {
+    this.googlePlacesService.makeIntentionalError().subscribe(null, error => this.error = error);
+  }
+  
+  private _filterTown(townValue: string): string[] {
+    const filterTownValue = townValue.toLowerCase();
+
+    return this.townNames.filter(selectedTown => selectedTown.toLowerCase().includes(filterTownValue));
+  }
+
+  private _filterState(stateValue: string): string[] {
+    const filterStateValue = stateValue.toLowerCase();
+
+    return this.stateNames.filter(selectedState => selectedState.toLowerCase().includes(filterStateValue));
   }
 }

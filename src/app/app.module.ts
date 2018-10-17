@@ -5,13 +5,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { TimezoneDisplayComponent } from './timezone-display/timezone-display.component';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatAutocompleteModule,  MatFormFieldModule, MatCardModule, MatInputModule } from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; //no clue why this is here but it removes console debug message
 
 const modules = [
   MatAutocompleteModule,
   MatButtonModule,
   MatFormFieldModule,
+  MatCardModule,
+  MatButtonModule,
   MatInputModule
 ];
 

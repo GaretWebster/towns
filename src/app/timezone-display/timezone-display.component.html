@@ -1,47 +1,54 @@
-<p>
-	timezone-display component {{word}} {{data}}
-</p>
-
-<form class="example-form">
-	<mat-form-field class="example-full-width">
-		<input type="text" placeholder="State" aria-label="Number" matInput [formControl]="stateControl" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option.name}}
+<form>
+	<mat-form-field class="eighty-width">
+		<input type="text" placeholder="State" matInput [formControl]="stateControl" [matAutocomplete]="state">
+    <mat-autocomplete #state="matAutocomplete">
+      <mat-option *ngFor="let selectedState of filteredStateNames | async" [value]="selectedState">
+        {{selectedState}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input type="text" placeholder="Town" aria-label="Number" matInput [formControl]="stateControl" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option.name}}
+  <mat-form-field class="eighty-width">
+    <input type="text" placeholder="Town" matInput [formControl]="townControl" [matAutocomplete]="town">
+    <mat-autocomplete #town="matAutocomplete">
+      <mat-option *ngFor="let selectedTown of filteredTownNames | async" [value]="selectedTown">
+        {{selectedTown}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 </form>
 
-<h3>Get configuration from JSON file</h3>
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>San Diego</mat-card-title>
+    <mat-card-subtitle>California</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p> Current time : 3 pm </p>
+    <p> Timzeone : PST </p>
+    <p> Population : 100 </p>
+    <p> Elevation : 100 </p>
+    <p> Latitude: 37.39755</p>
+    <p> Longitude : -87.76279 </p>
+    <p> Last Update :  2011-05-14 </p>
+    <button mat-flat-button color="warn" mat-button>Delete</button>
+  </mat-card-content>
+</mat-card>
+
+<h3>API service testing buttons below</h3>
 <div>
-  <button (click)="clear(); showConfig()">get</button>
-  <button (click)="clear(); showCities()">get_cities</button>
-  <button (click)="clear(); showConfigResponse()">getResponse</button>
+  <button (click)="clear(); showCities()">getCities</button>
+  <button (click)="clear(); showBigCities()">getBigCities</button>
+  <button (click)="clear(); showStates()">getStates</button>
   <button (click)="clear()">clear</button>
   <button (click)="clear(); makeError()">error</button>
   <span *ngIf="city">
-    <p>city 0 name is "{{city[0].name}}"</p>
-    <p>city 0 state is "{{city[0].admin1_code}}"</p>
+    <p>The first city name name is "{{city[0].name}}"</p>
+    <p>The first city state is "{{city[0].admin1_code}}"</p>
   </span>
-  <span *ngIf="config">
-    <p>Heroes API URL is "{{config.heroesUrl}}"</p>
-    <p>Textfile URL is "{{config.textfile}}"</p>
-    <div *ngIf="headers">
-      Response headers:
-      <ul>
-        <li *ngFor="let header of headers">{{header}}</li>
-      </ul>
-    </div>
+    <span *ngIf="states">
+    <p>The first state name is "{{states[0].name}}"</p>
+    <p>The first state abbreviation is "{{states[0].abbreviation}}"</p>
   </span>
 </div>
 <p *ngIf="error" class="error">{{error | json}}</p>
